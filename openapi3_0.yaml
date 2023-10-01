@@ -1,0 +1,233 @@
+openapi: 3.0.0
+info:
+  title: CLiQQ application API re-defined
+  version: 1.0.0
+servers:
+  - url: http://comingsoon.com
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+paths:
+  /account/activation:
+    post:
+      tags:
+        - account
+      summary: Request Verification Code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                mobileNumber: '09198733262'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Status Code
+                    example: 200
+                  status:
+                    type: string
+                    description: status of transaction
+                    example: Success
+                  message:
+                    type: string 
+                    description: Message description
+                    example: Mobile verification code sent
+
+  /account/authorization:
+    post:
+      tags:
+        - account
+      summary: Sign In / Create Authorization
+      requestBody:
+        content: {}
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Basic NjM5MjI5MjM5ODYzOjY4MzU=
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Status Code
+                    example: 200
+                  status:
+                    type: string
+                    description: status of transaction
+                    example: Success
+                  token:
+                    type: string 
+                    description: access token
+                    example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTA2MzU2NzUsIm5iZiI6MTY1MDYzNTY3NSwianRpIjoiNDM2YTg2ZDItNzIxZi00OWRkLTlhN2EtYTllYjY1MTFjZjdkIiwiZXhwIjoxNjUwNjM2Mjc1LCJpZGVudGl0eSI6Ijc5ZTU1NDdjLTdkZTItMTFlYy1hODgxLTAwMTU1ZGVlZWMwMCIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.qDB9nZNDUJO5MQ7_1ZE0Tf2RzXbskJYxDgn1gpgP9FY
+
+  /account/{mobile_number}/balance:
+    get:
+      tags:
+        - account
+      summary: Get Balance
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: mobile_number
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Status Code
+                    example: 200
+                  status:
+                    type: string
+                    description: status of transaction
+                    example: Success
+                  data:
+                    type: object  
+                    description: data values
+                    example: 
+                      balance: 7429
+  /account/{mobile_number}/cp_conversion:
+    post:
+      tags:
+        - account
+      summary: Deduct Amount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                pointsBalance: '100'
+                deductAmount: '50'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: mobile_number
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Status Code
+                    example: 200
+                  status:
+                    type: string
+                    description: status of transaction
+                    example: Success
+                  data:
+                    type: object  
+                    description: data values
+                    example: 
+                      remainingBalance: 50
+  /account/{mobile_number}/cp_conversion_cancellation:
+    post:
+      tags:
+        - account
+      summary: Reverse Deduction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                pointsBalance: '150'
+                refundDeductAmount: '50'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: mobile_number
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Status Code
+                    example: 200
+                  status:
+                    type: string
+                    description: status of transaction
+                    example: Success
+                  data:
+                    type: object  
+                    description: data values
+                    example: 
+                      balance: 200
+                      message: Refund success
+  /account/{mobile_number}/deactivation:
+    post:
+      tags:
+        - account
+      summary: Deactivation
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: mobile_number
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Status Code
+                    example: 200
+                  status:
+                    type: string
+                    description: status of transaction
+                    example: Success
+                  message:
+                    type: string 
+                    description: Message description
+                    example: successful deactivation
