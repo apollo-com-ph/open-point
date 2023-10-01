@@ -1,2 +1,2 @@
 # open-point
-open point to cliqq connection
+https://apollo-com-ph.github.io/open-point/#/
