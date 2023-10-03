@@ -85,6 +85,11 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Basic NjM5MjI5MjM5ODYzOjY4MzU=
         - name: mobile_number
           in: path
           schema:
@@ -127,6 +132,11 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Basic NjM5MjI5MjM5ODYzOjY4MzU=
         - name: mobile_number
           in: path
           schema:
@@ -169,6 +179,11 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Basic NjM5MjI5MjM5ODYzOjY4MzU=
         - name: mobile_number
           in: path
           schema:
@@ -206,6 +221,11 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Basic NjM5MjI5MjM5ODYzOjY4MzU=
         - name: mobile_number
           in: path
           schema:
