@@ -3,7 +3,8 @@ info:
   title: CLiQQ application API re-defined
   version: 1.0.0
 servers:
-  - url: http://comingsoon.com
+  - url: https://op-link-sbx.cliqq.net
+  - url: https://op-link.cliqq.net
 components:
   securitySchemes:
     bearerAuth:
