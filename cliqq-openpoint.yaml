@@ -17,7 +17,7 @@ paths:
     post:
       tags:
         - account
-      summary: Request binding of openpoints member_id to a new cliqq member account
+      summary: Request binding of openpoints member id to a new cliqq member account
       description: |-
         To be called when the user taps “Bind CLiQQ Card” for and agrees to T&C. A new CLiQQ
         member is created, along with a newly created loyalty account using a new account 
@@ -39,7 +39,7 @@ paths:
     post:
       tags:
         - account
-      summary: Request cliqq point balance
+      summary: Request cliqq points balance
       description: |-
         To be called when the user views OP’s CLiQQ screen
       operationId: getAccountBalance
@@ -59,7 +59,7 @@ paths:
     post:
       tags:
         - account
-      summary: Request conversion of cliqq points to openpoints balance
+      summary: Request conversion of cliqq points to openpoints
       description: |-
         To be called when the user converts their CLiQQ points to OP points
       operationId: convertPoints
