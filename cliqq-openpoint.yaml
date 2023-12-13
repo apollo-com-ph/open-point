@@ -35,8 +35,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountBindingResult'
-
+  /account/balanceInquiry:
+    post:
+      tags:
+        - account
+      summary: Request cliqq point balance
+      description: |-
+        To be called when the user views OP’s CLiQQ screen
+      operationId: getAccountBalance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountBalance'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountBalanceResult'
+  /account/conversion:
+    post:
+      tags:
+        - account
+      summary: Request conversion of cliqq points to openpoints balance
+      description: |-
+        To be called when the user converts their CLiQQ points to OP points
+      operationId: convertPoints
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountConversion'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountConversionResult'
   
+  /account/unbinding:
+    post:
+      tags:
+        - account
+      summary: Request account unbinding
+      description: |-
+        To be called when the user unlinks their CLiQQ account from their OP account
+      operationId: unbindAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountUnbinding'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountUnbindingResult'
 components:
   schemas:
     AccountBinding:
@@ -71,7 +130,7 @@ components:
           example: "200"
         returnMessage:
           type: string
-          description:
+          description: human readable message
           example: "Binding created successfully"
         cliqqId:
           type: string 
@@ -81,7 +140,143 @@ components:
           type: string
           description: cliqq member barcode data used for earning cliqq points
           example: "9902000786865"
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
+        processTime:
+          description: timestamp
+          type: string
+          format: date-time
+    AccountBalance:
+      type: object
+      properties:
+        requestId:
+          description: unique request identifier, ksuid or uuid
+          type: string
+          example: "2ZTcYqW6jGaTH3o2B0Rh8wPJmoG"
+        requestTime:
+          description: timestamp
+          type: string
+          format: date-time
+        cliqqBarcode:
+          type: string
+          description: cliqq member barcode data used for earning cliqq points
+          example: "9902000786865"
+        sig:
+          description: request signature
+          type: string
+          example: "2ZTcmShbPggCgpV0ynD8elT3qAZ2ZTcmSQPvIntyCXXO8OJIQjf4SN2ZTcmW5dtul6XonwBid24K6jJu12ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXWkX44JA4eFecLS34fKAlg"
+    AccountBalanceResult:
+      type: object
+      properties:
+        requestId:
+          type: string
+          description: requestId from the request body
+          example: "2ZTcYqW6jGaTH3o2B0Rh8wPJmoG"
+        returnCode:
+          type: string
+          description: returnCode
+          example: "200"
+        returnMessage:
+          type: string
+          description: human readable message
+          example: "Balance Inquiry successfully processed"
+        cliqqPoints:
+          type: string
+          description: cliqq member points earned
+          example: "99.08"
+        processTime:
+          description: timestamp
+          type: string
+          format: date-time
+          
+    AccountConversion:
+      type: object
+      properties:
+        requestId:
+          description: unique request identifier, ksuid or uuid
+          type: string
+          example: "2ZTcYqW6jGaTH3o2B0Rh8wPJmoG"
+        requestTime:
+          description: timestamp
+          type: string
+          format: date-time
+        cliqqBarcode:
+          type: string
+          description: cliqq member barcode data used for earning cliqq points
+          example: "9902000786865"
+        deductCliqqPoints:
+          type: string
+          description: Points to deduct from the member balance
+          example: "30.00"
+        creditOpenPoints:
+          type: string
+          description: Points that will be credited to the openpoints member account
+          example: "10.00"
+        sig:
+          description: request signature
+          type: string
+          example: "2ZTcmShbPggCgpV0ynD8elT3qAZ2ZTcmSQPvIntyCXXO8OJIQjf4SN2ZTcmW5dtul6XonwBid24K6jJu12ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXWkX44JA4eFecLS34fKAlg"
+    AccountConversionResult:
+      type: object
+      properties:
+        requestId:
+          type: string
+          description: requestId from the request body
+          example: "2ZTcYqW6jGaTH3o2B0Rh8wPJmoG"
+        returnCode:
+          type: string
+          description: returnCode
+          example: "200"
+        returnMessage:
+          type: string
+          description: human readable message
+          example: "CLiQQ Point conversion successfully processed"
+        deductCliqqPoints:
+          type: string
+          description: Points to deduct from the member balance
+          example: "30.00"
+        creditOpenPoints:
+          type: string
+          description: Points that will be credited to the openpoints member account
+          example: "10.00"
+        processTime:
+          description: timestamp
+          type: string
+          format: date-time
+          
+    AccountUnbinding:
+      type: object
+      properties:
+        requestId:
+          description: unique request identifier, ksuid or uuid
+          type: string
+          example: "2ZTcYqW6jGaTH3o2B0Rh8wPJmoG"
+        requestTime:
+          description: timestamp
+          type: string
+          format: date-time
+        openpointsId:
+          description: identifier of the openpoints member
+          type: string
+          example: "2ZTcfhWKbgobnQNLBKiWWwcvUI6"
+        sig:
+          description: request signature
+          type: string
+          example: "2ZTcmShbPggCgpV0ynD8elT3qAZ2ZTcmSQPvIntyCXXO8OJIQjf4SN2ZTcmW5dtul6XonwBid24K6jJu12ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXWkX44JA4eFecLS34fKAlg"
+    AccountUnbindingResult:
+      type: object
+      properties:
+        requestId:
+          type: string
+          description: requestId from the request body
+          example: "2ZTcYqW6jGaTH3o2B0Rh8wPJmoG"
+        returnCode:
+          type: string
+          description: returnCode
+          example: "200"
+        returnMessage:
+          type: string
+          description: human readable message
+          example: "Binding removed successfully"
+        processTime:
+          description: timestamp
+          type: string
+          format: date-time
