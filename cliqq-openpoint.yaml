@@ -1,241 +1,87 @@
 openapi: 3.0.0
 info:
-  title: CLiQQ application API re-defined
+  title: CLiQQ Openpoints Integration API 
   version: 1.0.0
+  description: |-
+    This API specification is meant to be used by the Openpoints System.
 servers:
   - url: https://op-link-sbx.cliqq.net
+    description: sandbox 
   - url: https://op-link.cliqq.net
+    description: production
+tags:
+  - name: account
+    description: Everything about an account
+paths:
+  /account/binding:
+    post:
+      tags:
+        - account
+      summary: Request binding of openpoints member_id to a new cliqq member account
+      description: |-
+        To be called when the user taps “Bind CLiQQ Card” for and agrees to T&C. A new CLiQQ
+        member is created, along with a newly created loyalty account using a new account 
+        number prefix
+      operationId: bindAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountBinding'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountBindingResult'
+
+  
 components:
+  schemas:
+    AccountBinding:
+      type: object
+      properties:
+        requestId:
+          description: unique request identifier, ksuid or uuid
+          type: string
+          example: "2ZTcYqW6jGaTH3o2B0Rh8wPJmoG"
+        requestTime:
+          description: timestamp
+          type: string
+          format: date-time
+        openpointsId:
+          description: identifier of the openpoints member
+          type: string
+          example: "2ZTcfhWKbgobnQNLBKiWWwcvUI6"
+        sig:
+          description: request signature
+          type: string
+          example: "2ZTcmShbPggCgpV0ynD8elT3qAZ2ZTcmSQPvIntyCXXO8OJIQjf4SN2ZTcmW5dtul6XonwBid24K6jJu12ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXWkX44JA4eFecLS34fKAlg"
+    AccountBindingResult:
+      type: object
+      properties:
+        requestId:
+          type: string
+          description: requestId from the request body
+          example: "2ZTcYqW6jGaTH3o2B0Rh8wPJmoG"
+        returnCode:
+          type: string
+          description: returnCode
+          example: "200"
+        returnMessage:
+          type: string
+          description:
+          example: "Binding created successfully"
+        cliqqId:
+          type: string 
+          description: cliqq member id bound to the openpoints id provided in the request body
+          example: "2ZTcmX5iHITG5giMlHOpetX4zJ7"
+        cliqqBarcode:
+          type: string
+          description: cliqq member barcode data used for earning cliqq points
+          example: "9902000786865"
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-paths:
-  /account/activation:
-    post:
-      tags:
-        - account
-      summary: Request Verification Code
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                mobileNumber: '09198733262'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    description: Status Code
-                    example: 200
-                  status:
-                    type: string
-                    description: status of transaction
-                    example: Success
-                  message:
-                    type: string 
-                    description: Message description
-                    example: Mobile verification code sent
-
-  /account/authorization:
-    post:
-      tags:
-        - account
-      summary: Sign In / Create Authorization
-      requestBody:
-        content: {}
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Basic NjM5MjI5MjM5ODYzOjY4MzU=
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    description: Status Code
-                    example: 200
-                  status:
-                    type: string
-                    description: status of transaction
-                    example: Success
-                  token:
-                    type: string 
-                    description: access token
-                    example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTA2MzU2NzUsIm5iZiI6MTY1MDYzNTY3NSwianRpIjoiNDM2YTg2ZDItNzIxZi00OWRkLTlhN2EtYTllYjY1MTFjZjdkIiwiZXhwIjoxNjUwNjM2Mjc1LCJpZGVudGl0eSI6Ijc5ZTU1NDdjLTdkZTItMTFlYy1hODgxLTAwMTU1ZGVlZWMwMCIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.qDB9nZNDUJO5MQ7_1ZE0Tf2RzXbskJYxDgn1gpgP9FY
-
-  /account/balance:
-    get:
-      tags:
-        - account
-      summary: Get Balance
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Basic NjM5MjI5MjM5ODYzOjY4MzU=
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    description: Status Code
-                    example: 200
-                  status:
-                    type: string
-                    description: status of transaction
-                    example: Success
-                  data:
-                    type: object  
-                    description: data values
-                    example: 
-                      balance: 7429
-  /account/cp_conversion:
-    post:
-      tags:
-        - account
-      summary: Deduct Amount
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                mobileNumber: "ODg2OTE5OTg0NDM3MzoxMTEx"
-                pointsBalance: '100'
-                deductAmount: '50'
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Basic NjM5MjI5MjM5ODYzOjY4MzU=
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    description: Status Code
-                    example: 200
-                  status:
-                    type: string
-                    description: status of transaction
-                    example: Success
-                  data:
-                    type: object  
-                    description: data values
-                    example: 
-                      remainingBalance: 50
-  /account/cp_conversion_cancellation:
-    post:
-      tags:
-        - account
-      summary: Reverse Deduction
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                mobileNumber: "ODg2OTE5OTg0NDM3MzoxMTEx"
-                pointsBalance: '150'
-                refundDeductAmount: '50'
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Basic NjM5MjI5MjM5ODYzOjY4MzU=
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    description: Status Code
-                    example: 200
-                  status:
-                    type: string
-                    description: status of transaction
-                    example: Success
-                  data:
-                    type: object  
-                    description: data values
-                    example: 
-                      balance: 200
-                      message: Refund success
-  /account/deactivation:
-    post:
-      tags:
-        - account
-      summary: Deactivation
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                mobileNumber: "ODg2OTE5OTg0NDM3MzoxMTEx"
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Basic NjM5MjI5MjM5ODYzOjY4MzU=
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    description: Status Code
-                    example: 200
-                  status:
-                    type: string
-                    description: status of transaction
-                    example: Success
-                  message:
-                    type: string 
-                    description: Message description
-                    example: successful deactivation
