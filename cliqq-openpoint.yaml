@@ -114,7 +114,12 @@ components:
           type: string
           example: "2ZTcfhWKbgobnQNLBKiWWwcvUI6"
         sig:
-          description: request signature
+          description: |-
+            request signature produced by the following psuedo code:
+            
+            requestHash = sha256(concatenate(requestId,requestTime,openpointsId)
+            
+            sig = generateRSASignature(requestHash, rsaPrivateKey)
           type: string
           example: "2ZTcmShbPggCgpV0ynD8elT3qAZ2ZTcmSQPvIntyCXXO8OJIQjf4SN2ZTcmW5dtul6XonwBid24K6jJu12ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXWkX44JA4eFecLS34fKAlg"
     AccountBindingResult:
@@ -160,7 +165,12 @@ components:
           description: cliqq member barcode data used for earning cliqq points
           example: "9902000786865"
         sig:
-          description: request signature
+          description: |-
+            request signature produced by the following psuedo code:
+            
+            requestHash = sha256(concatenate(requestId,requestTime,cliqqBarcode)
+            
+            sig = generateRSASignature(requestHash, rsaPrivateKey)
           type: string
           example: "2ZTcmShbPggCgpV0ynD8elT3qAZ2ZTcmSQPvIntyCXXO8OJIQjf4SN2ZTcmW5dtul6XonwBid24K6jJu12ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXWkX44JA4eFecLS34fKAlg"
     AccountBalanceResult:
@@ -211,7 +221,12 @@ components:
           description: Points that will be credited to the openpoints member account
           example: "10.00"
         sig:
-          description: request signature
+          description: |-
+            request signature produced by the following psuedo code:
+            
+            requestHash = sha256(concatenate(requestId,requestTime,cliqqBarcode,deductCliqqPoints,creditOpenPoints)
+            
+            sig = generateRSASignature(requestHash, rsaPrivateKey)
           type: string
           example: "2ZTcmShbPggCgpV0ynD8elT3qAZ2ZTcmSQPvIntyCXXO8OJIQjf4SN2ZTcmW5dtul6XonwBid24K6jJu12ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXWkX44JA4eFecLS34fKAlg"
     AccountConversionResult:
@@ -258,7 +273,12 @@ components:
           type: string
           example: "2ZTcfhWKbgobnQNLBKiWWwcvUI6"
         sig:
-          description: request signature
+          description: |-
+            request signature produced by the following psuedo code:
+            
+            requestHash = sha256(concatenate(requestId,requestTime,cliqqBarcode,deductCliqqPoints,creditOpenPoints)
+            
+            sig = generateRSASignature(requestHash, rsaPrivateKey)
           type: string
           example: "2ZTcmShbPggCgpV0ynD8elT3qAZ2ZTcmSQPvIntyCXXO8OJIQjf4SN2ZTcmW5dtul6XonwBid24K6jJu12ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXWkX44JA4eFecLS34fKAlg"
     AccountUnbindingResult:
