@@ -23,6 +23,8 @@ paths:
         member is created, along with a newly created loyalty account using a new account 
         number prefix
       operationId: bindAccount
+      security:
+        - authorizationHeader: []
       requestBody:
         content:
           application/json:
@@ -35,6 +37,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountBindingResult'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRequestBody'
+        '401':
+          description: Unauthorized Request
+        '403':
+          description: Invalid request signature
   /account/balanceInquiry:
     post:
       tags:
@@ -43,6 +55,8 @@ paths:
       description: |-
         To be called when the user views OP’s CLiQQ screen
       operationId: getAccountBalance
+      security:
+        - authorizationHeader: []
       requestBody:
         content:
           application/json:
@@ -55,6 +69,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountBalanceResult'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRequestBody'
+        '401':
+          description: Unauthorized Request
+        '403':
+          description: Invalid request signature
   /account/conversion:
     post:
       tags:
@@ -63,6 +87,8 @@ paths:
       description: |-
         To be called when the user converts their CLiQQ points to OP points
       operationId: convertPoints
+      security:
+        - authorizationHeader: []
       requestBody:
         content:
           application/json:
@@ -75,7 +101,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountConversionResult'
-  
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRequestBody'
+        '401':
+          description: Unauthorized Request
+        '403':
+          description: Invalid request signature
   /account/unbinding:
     post:
       tags:
@@ -84,6 +119,8 @@ paths:
       description: |-
         To be called when the user unlinks their CLiQQ account from their OP account
       operationId: unbindAccount
+      security:
+        - authorizationHeader: []
       requestBody:
         content:
           application/json:
@@ -96,7 +133,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountUnbindingResult'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRequestBody'
+        '401':
+          description: Unauthorized Request
+        '403':
+          description: Invalid request signature
 components:
+  securitySchemes:
+    authorizationHeader:
+      type: apiKey
+      name: Auhtorization
+      in: header
   schemas:
     AccountBinding:
       type: object
@@ -296,6 +348,26 @@ components:
           type: string
           description: human readable message
           example: "Binding removed successfully"
+        processTime:
+          description: timestamp
+          type: string
+          format: date-time
+    
+    InvalidRequestBody:
+      type: object
+      properties:
+        requestId:
+          type: string
+          description: requestId from the request body
+          example: "2ZTcYqW6jGaTH3o2B0Rh8wPJmoG"
+        returnCode:
+          type: string
+          description: returnCode
+          example: "400"
+        returnMessage:
+          type: string
+          description: human readable message
+          example: "Invalid Request Body"
         processTime:
           description: timestamp
           type: string
