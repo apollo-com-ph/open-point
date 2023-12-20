@@ -111,6 +111,40 @@ paths:
           description: Unauthorized Request
         '403':
           description: Invalid request signature
+  /account/cancelConversion:
+    post:
+      tags:
+        - account
+      summary: Request cancellation of previous conversion of cliqq points to openpoints
+      description: |-
+        To be called when the responses to a conversion request was not received
+        
+        This will reverse the deducted points from the previous request
+      operationId: cancelConversion
+      security:
+        - authorizationHeader: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCancelConversion'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountCancelConversionResult'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRequestBody'
+        '401':
+          description: Unauthorized Request
+        '403':
+          description: Invalid request signature
   /account/unbinding:
     post:
       tags:
@@ -308,7 +342,58 @@ components:
           description: timestamp
           type: string
           format: date-time
-          
+    
+    AccountCancelConversion:
+      type: object
+      properties:
+        requestId:
+          description: unique request identifier, ksuid or uuid
+          type: string
+          example: "2ZTcYqW6jGaTH3o2B0Rh8wPJmoG"
+        requestTime:
+          description: timestamp
+          type: string
+          format: date-time
+        cliqqBarcode:
+          type: string
+          description: cliqq member barcode data used for earning cliqq points
+          example: "9902000786865"
+        deductCliqqPoints:
+          type: string
+          description: Points to deduct from the member balance
+          example: "30.00"
+        creditOpenPoints:
+          type: string
+          description: Points that will be credited to the openpoints member account
+          example: "10.00"
+        sig:
+          description: |-
+            request signature produced by the following psuedo code:
+            
+            requestHash = sha256(concatenate(requestId,requestTime,cliqqBarcode,deductCliqqPoints,creditOpenPoints)
+            
+            sig = generateRSASignature(requestHash, rsaPrivateKey)
+          type: string
+          example: "2ZTcmShbPggCgpV0ynD8elT3qAZ2ZTcmSQPvIntyCXXO8OJIQjf4SN2ZTcmW5dtul6XonwBid24K6jJu12ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXsLsQD9gtqegprXlAeyX6v2ZTcmXWkX44JA4eFecLS34fKAlg"
+    AccountCancelConversionResult:
+      type: object
+      properties:
+        requestId:
+          type: string
+          description: requestId from the request body
+          example: "2ZTcYqW6jGaTH3o2B0Rh8wPJmoG"
+        returnCode:
+          type: string
+          description: returnCode
+          example: "200"
+        returnMessage:
+          type: string
+          description: human readable message
+          example: "CLiQQ Point conversion cancellation successfully processed"
+        processTime:
+          description: timestamp
+          type: string
+          format: date-time      
     AccountUnbinding:
       type: object
       properties:
