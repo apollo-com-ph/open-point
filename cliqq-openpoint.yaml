@@ -196,9 +196,36 @@ components:
           type: string
           format: date-time
         openpointsId:
-          description: identifier of the openpoints member
+          description: |
+            identifier of the openpoints member
+          
+            - base 64 encoded
+            - first 12 bytes is IV
+            - remaining bytes is encrypted value
+            - cipher:AES mode:GCM padding:none tag-length:128
+            
+            Example:
+            
+              openpointsId(string): 88888888
+              
+              random iv(string): 123456789012
+              
+              random iv(hex): 313233343536373839303132
+              
+              encryptionKey(string): 0000secretaeskey0000secretaeskey
+              
+              encryptionKey(hex): 303030307365637265746165736b6579303030307365637265746165736b6579
+              
+              cipher:AES mode:GCM padding:none tag-length:128
+              
+              cipher_result(hex): fc53d26593ecdda556962600589ecbdbfd666a11d58f6351
+              
+              iv + cipher_result(hex): 313233343536373839303132fc53d26593ecdda556962600589ecbdbfd666a11d58f6351
+              
+              result(base64): MTIzNDU2Nzg5MDEy/FPSZZPs3aVWliYAWJ7L2/1mahHVj2NR
+              
           type: string
-          example: "2ZTcfhWKbgobnQNLBKiWWwcvUI6"
+          example: "MTIzNDU2Nzg5MDEy/FPSZZPs3aVWliYAWJ7L2/1mahHVj2NR"
         sig:
           description: |-
             request signature produced by the following psuedo code:
@@ -225,12 +252,64 @@ components:
           example: "Binding created successfully"
         cliqqId:
           type: string 
-          description: cliqq member id bound to the openpoints id provided in the request body
+          description: |
+            cliqq member id bound to the openpoints id provided in the request body
+            
+            - base 64 encoded
+            - first 12 bytes is IV
+            - remaining bytes is encrypted value
+            - cipher:AES mode:GCM padding:none tag-length:128
+            
+            Example:
+            
+              cliqqId(string): 88888888
+              
+              random iv(string): 123456789012
+              
+              random iv(hex): 313233343536373839303132
+              
+              encryptionKey(string): 0000secretaeskey0000secretaeskey
+              
+              encryptionKey(hex): 303030307365637265746165736b6579303030307365637265746165736b6579
+              
+              cipher:AES mode:GCM padding:none tag-length:128
+              
+              cipher_result(hex): fc53d26593ecdda556962600589ecbdbfd666a11d58f6351
+              
+              iv + cipher_result(hex): 313233343536373839303132fc53d26593ecdda556962600589ecbdbfd666a11d58f6351
+              
+              result(base64): MTIzNDU2Nzg5MDEy/FPSZZPs3aVWliYAWJ7L2/1mahHVj2NR
           example: "2ZTcmX5iHITG5giMlHOpetX4zJ7"
         cliqqBarcode:
           type: string
-          description: cliqq member barcode data used for earning cliqq points
-          example: "9902000786865"
+          description: |
+            cliqq member barcode data used for earning cliqq points
+          
+            - base 64 encoded
+            - first 12 bytes is IV
+            - remaining bytes is encrypted value
+            - cipher:AES mode:GCM padding:none tag-length:128
+            
+            Example:
+            
+              cliqqBarcode(string): 99020000999999
+              
+              random iv(string): 123456789012
+              
+              random iv(hex): 313233343536373839303132
+              
+              encryptionKey(string): 0000secretaeskey0000secretaeskey
+              
+              encryptionKey(hex): 303030307365637265746165736b6579303030307365637265746165736b6579
+              
+              cipher:AES mode:GCM padding:none tag-length:128
+              
+              cipher_result(hex): fd52da6f9be4d5ad965acb862cba2bb6201127b5a8f1b7054009fc157d68
+              
+              iv + cipher_result(hex): 313233343536373839303132fd52da6f9be4d5ad965acb862cba2bb6201127b5a8f1b7054009fc157d68
+              
+              result(base64): MTIzNDU2Nzg5MDEy/VLab5vk1a2WWsuGLLortiARJ7Wo8bcFQAn8FX1o
+          example: "MTIzNDU2Nzg5MDEy/VLab5vk1a2WWsuGLLortiARJ7Wo8bcFQAn8FX1o"
         processTime:
           description: timestamp
           type: string
@@ -248,8 +327,34 @@ components:
           format: date-time
         cliqqBarcode:
           type: string
-          description: cliqq member barcode data used for earning cliqq points
-          example: "9902000786865"
+          description: |
+            cliqq member barcode data used for earning cliqq points
+          
+            - base 64 encoded
+            - first 12 bytes is IV
+            - remaining bytes is encrypted value
+            - cipher:AES mode:GCM padding:none tag-length:128
+            
+            Example:
+            
+              cliqqBarcode(string): 99020000999999
+              
+              random iv(string): 123456789012
+              
+              random iv(hex): 313233343536373839303132
+              
+              encryptionKey(string): 0000secretaeskey0000secretaeskey
+              
+              encryptionKey(hex): 303030307365637265746165736b6579303030307365637265746165736b6579
+              
+              cipher:AES mode:GCM padding:none tag-length:128
+              
+              cipher_result(hex): fd52da6f9be4d5ad965acb862cba2bb6201127b5a8f1b7054009fc157d68
+              
+              iv + cipher_result(hex): 313233343536373839303132fd52da6f9be4d5ad965acb862cba2bb6201127b5a8f1b7054009fc157d68
+              
+              result(base64): MTIzNDU2Nzg5MDEy/VLab5vk1a2WWsuGLLortiARJ7Wo8bcFQAn8FX1o
+          example: "MTIzNDU2Nzg5MDEy/VLab5vk1a2WWsuGLLortiARJ7Wo8bcFQAn8FX1o"
         sig:
           description: |-
             request signature produced by the following psuedo code:
@@ -296,8 +401,34 @@ components:
           format: date-time
         cliqqBarcode:
           type: string
-          description: cliqq member barcode data used for earning cliqq points
-          example: "9902000786865"
+          description: |
+            cliqq member barcode data used for earning cliqq points
+          
+            - base 64 encoded
+            - first 12 bytes is IV
+            - remaining bytes is encrypted value
+            - cipher:AES mode:GCM padding:none tag-length:128
+            
+            Example:
+            
+              cliqqBarcode(string): 99020000999999
+              
+              random iv(string): 123456789012
+              
+              random iv(hex): 313233343536373839303132
+              
+              encryptionKey(string): 0000secretaeskey0000secretaeskey
+              
+              encryptionKey(hex): 303030307365637265746165736b6579303030307365637265746165736b6579
+              
+              cipher:AES mode:GCM padding:none tag-length:128
+              
+              cipher_result(hex): fd52da6f9be4d5ad965acb862cba2bb6201127b5a8f1b7054009fc157d68
+              
+              iv + cipher_result(hex): 313233343536373839303132fd52da6f9be4d5ad965acb862cba2bb6201127b5a8f1b7054009fc157d68
+              
+              result(base64): MTIzNDU2Nzg5MDEy/VLab5vk1a2WWsuGLLortiARJ7Wo8bcFQAn8FX1o
+          example: "MTIzNDU2Nzg5MDEy/VLab5vk1a2WWsuGLLortiARJ7Wo8bcFQAn8FX1o"
         deductCliqqPoints:
           type: string
           description: Points to deduct from the member balance
@@ -406,9 +537,35 @@ components:
           type: string
           format: date-time
         openpointsId:
-          description: identifier of the openpoints member
+          description: |
+            identifier of the openpoints member
+          
+            - base 64 encoded
+            - first 12 bytes is IV
+            - remaining bytes is encrypted value
+            - cipher:AES mode:GCM padding:none tag-length:128
+            
+            Example:
+            
+              openpointsId(string): 88888888
+              
+              random iv(string): 123456789012
+              
+              random iv(hex): 313233343536373839303132
+              
+              encryptionKey(string): 0000secretaeskey0000secretaeskey
+              
+              encryptionKey(hex): 303030307365637265746165736b6579303030307365637265746165736b6579
+              
+              cipher:AES mode:GCM padding:none tag-length:128
+              
+              cipher_result(hex): fc53d26593ecdda556962600589ecbdbfd666a11d58f6351
+              
+              iv + cipher_result(hex): 313233343536373839303132fc53d26593ecdda556962600589ecbdbfd666a11d58f6351
+              
+              result(base64): MTIzNDU2Nzg5MDEy/FPSZZPs3aVWliYAWJ7L2/1mahHVj2NR
           type: string
-          example: "2ZTcfhWKbgobnQNLBKiWWwcvUI6"
+          example: "MTIzNDU2Nzg5MDEy/FPSZZPs3aVWliYAWJ7L2/1mahHVj2NR"
         sig:
           description: |-
             request signature produced by the following psuedo code:
